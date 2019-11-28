@@ -71,7 +71,7 @@ typings/
 
 .DS_Store
 
-lib/
+/lib/
 dist/
 
 # Terraform
@@ -88,3 +88,5 @@ __generated__/
 .idea
 
 buildinfo.json
+
+schema/

@@ -1,25 +1,4 @@
-# jskube
-
-Configure Kuberenetes using TypeScript & JavaScript
-
-## Installation
-
-```
-yarn global add jskube
-```
-
-If you're using TypeScript, also do:
-
-```
-yarn global add typescript ts-node
-```
-
-## Usage
-
-config.ts
-
-```ts
-import Ingress from 'jskube/schema/ingress-extensions-v1beta1';
+import Ingress from '../../../schema/ingress-extensions-v1beta1';
 
 export function ingress(options: {
   name: string;
@@ -61,6 +40,7 @@ export function certificate(options: {
   host: string;
   secretName: string;
 }) {
+  // kubectl describe certificate CERTIFICATE_NAME
   return {
     apiVersion: 'cert-manager.io/v1alpha2',
     kind: 'Certificate',
@@ -109,18 +89,3 @@ export default [
     secretName: 'web-app-template-ingress-tls-staging',
   }),
 ];
-```
-
-Then run:
-
-```
-jskube apply -f config.ts
-```
-
-Commands:
-
-- `jskube print -f foo.ts` - print the yaml for foo.ts
-- `jskube apply -f foo.ts` - update the infrastructure to match foo.ts
-- `jskube diff -f foo.ts` - show the changes if foo.ts is applied
-- `jskube delete -f foo.ts` - delete all the resources in foo.ts (also aliased as `jskube destroy -f foo.ts`)
-- all other commands passed through, but with the `-f` parameter handled by jskube

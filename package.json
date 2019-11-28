@@ -1,9 +1,16 @@
 {
-  "name": "@forbeslindesay/npm-package-template",
-  "description": "npm-package-template",
+  "name": "jskube",
+  "description": "Configure Kuberenetes using TypeScript & JavaScript",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "repository": "git@github.com:ForbesLindesay/npm-package-template.git",
+  "bin": {
+    "jskube": "./lib/cli.js"
+  },
+  "files": [
+    "lib/",
+    "schema/"
+  ],
+  "repository": "git@github.com:ForbesLindesay/jskube.git",
   "author": "Forbes Lindesay <forbes@lindesay.co.uk>",
   "license": "MIT",
   "scripts": {
@@ -15,16 +22,20 @@
     "test": "jest",
     "ci:test": "jest --silent --maxWorkers=2"
   },
-  "dependencies": {},
   "devDependencies": {
     "@forbeslindesay/tsconfig": "^2.0.0",
     "@types/jest": "^24.0.18",
+    "@types/js-yaml": "^3.12.1",
+    "@types/tmp": "^0.1.0",
     "husky": "^3.0.8",
     "jest": "^24.9.0",
+    "json-schema-to-typescript": "^7.1.0",
     "lint-staged": "^9.4.2",
     "prettier": "^1.18.2",
     "rimraf": "^3.0.0",
+    "throat": "^5.0.0",
     "ts-jest": "^24.1.0",
+    "ts-node": "^8.5.2",
     "tslint": "^5.20.0",
     "typescript": "^3.6.4"
   },
@@ -63,5 +74,9 @@
       "prettier --write",
       "git add"
     ]
+  },
+  "dependencies": {
+    "js-yaml": "^3.13.1",
+    "tmp": "^0.1.0"
   }
 }
