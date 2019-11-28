@@ -31,5 +31,7 @@ try {
 } catch (ex) {
   if (ex.code === 'EXIT_NON_ZERO') {
     process.exit(ex.exitCode || 1);
+  } else {
+    throw ex;
   }
 }
