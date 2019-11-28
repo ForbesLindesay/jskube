@@ -104,6 +104,9 @@ commands:
   build:
     steps:
       - run:
+          name: Schema
+          command: node scripts/generate-types && ls schema/
+      - run:
           name: Build
           command: yarn build
 

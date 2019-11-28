@@ -1,12 +1,16 @@
 {
-  "name": "@forbeslindesay/npm-package-template",
-  "description": "npm-package-template",
+  "name": "jskube",
+  "description": "Configure Kuberenetes using TypeScript & JavaScript",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "bin": {
+    "jskube": "./lib/cli.js"
+  },
   "files": [
-    "lib/"
+    "lib/",
+    "schema/"
   ],
-  "repository": "git@github.com:ForbesLindesay/npm-package-template.git",
+  "repository": "git@github.com:ForbesLindesay/jskube.git",
   "author": "Forbes Lindesay <forbes@lindesay.co.uk>",
   "license": "MIT",
   "scripts": {

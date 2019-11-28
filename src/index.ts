@@ -2,8 +2,7 @@ import {fileSync} from 'tmp';
 import {safeDump, DEFAULT_FULL_SCHEMA} from 'js-yaml';
 import {writeFileSync} from 'fs';
 import {spawnSync} from 'child_process';
-
-// js-yaml -> safeDump
+import {resolve} from 'path';
 
 export function readConfig(filename: string) {
   // tslint:disable-next-line: strict-type-predicates
@@ -18,7 +17,7 @@ export function readConfig(filename: string) {
       compilerOptions,
     });
   }
-  let result = require(filename);
+  let result = require(resolve(filename));
   if (result.__esModule) {
     result = result.default;
   }
@@ -39,60 +38,55 @@ export function print(filename: string) {
   );
 }
 
-export function apply(args: readonly string[]) {
-  const filename = args.find((a, i) => args[i - 1] === '-f');
-  const otherArgs = args.filter((a, i) => a !== '-f' && args[i - 1] !== '-f');
-  if (!filename) {
-    throw new Error('Missing -f parameter');
+function spawn(args: readonly string[]) {
+  const result = spawnSync('kubectl', args, {
+    stdio: 'inherit',
+  });
+  if (result.error) {
+    throw result.error;
   }
-  const yaml = print(filename);
-  const tmpFile = fileSync();
-  try {
-    writeFileSync(tmpFile.name, yaml);
-    const result = spawnSync(
-      'kubectl',
-      ['apply', '-f', tmpFile.name, ...otherArgs],
-      {
-        stdio: 'inherit',
-      },
-    );
-    if (result.error) {
-      throw result.error;
-    }
-    if (result.status) {
-      throw new Error(`kubectl had non-zero exit code: ${result.status}`);
-    }
-  } finally {
-    tmpFile.removeCallback();
+  if (result.status) {
+    const err = new Error(`kubectl had non-zero exit code: ${result.status}`);
+    (err as any).code = 'EXIT_NON_ZERO';
+    (err as any).exitCode = result.status;
+    throw err;
   }
 }
-
-export function diff(args: readonly string[]) {
-  const filename = args.find((a, i) => args[i - 1] === '-f');
-  const otherArgs = args.filter((a, i) => a !== '-f' && args[i - 1] !== '-f');
+export function run(
+  cmd: string,
+  filename: string | undefined,
+  otherArgs: readonly string[] = [],
+) {
+  if (filename) {
+    const yaml = print(filename);
+    const tmpFile = fileSync();
+    try {
+      writeFileSync(tmpFile.name, yaml);
+      spawn([cmd, '-f', tmpFile.name, ...otherArgs]);
+    } finally {
+      tmpFile.removeCallback();
+    }
+  } else {
+    spawn([cmd, ...otherArgs]);
+  }
+}
+export function apply(filename: string, otherArgs: readonly string[] = []) {
   if (!filename) {
     throw new Error('Missing -f parameter');
   }
-  const yaml = print(filename);
-  const tmpFile = fileSync();
-  try {
-    writeFileSync(tmpFile.name, yaml);
-    const result = spawnSync(
-      'kubectl',
-      ['diff', '-f', tmpFile.name, ...otherArgs],
-      {
-        stdio: 'pipe',
-      },
-    );
-    process.stderr.write(result.stderr);
-    process.stdout.write(result.stdout);
-    if (result.error) {
-      throw result.error;
-    }
-    if (result.status) {
-      throw new Error(`kubectl had non-zero exit code: ${result.status}`);
-    }
-  } finally {
-    tmpFile.removeCallback();
+  run('apply', filename, otherArgs);
+}
+
+export function diff(filename: string, otherArgs: readonly string[] = []) {
+  if (!filename) {
+    throw new Error('Missing -f parameter');
   }
+  run('diff', filename, otherArgs);
+}
+
+export function destroy(filename: string, otherArgs: readonly string[] = []) {
+  if (!filename) {
+    throw new Error('Missing -f parameter');
+  }
+  run('delete', filename, otherArgs);
 }

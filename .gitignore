@@ -71,7 +71,7 @@ typings/
 
 .DS_Store
 
-lib/
+/lib/
 dist/
 
 # Terraform

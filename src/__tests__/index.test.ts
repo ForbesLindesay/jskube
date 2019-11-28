@@ -1,8 +1,5 @@
-import {print, diff} from '..';
+import {print} from '..';
 
-test('diff', () => {
-  diff(['-f', `${__dirname}/fixtures/ingress.ts`]);
-});
 test('print', () => {
   expect(print(`${__dirname}/fixtures/ingress.ts`)).toMatchInlineSnapshot(`
     "---

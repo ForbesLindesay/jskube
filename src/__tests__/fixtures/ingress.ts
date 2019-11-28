@@ -1,6 +1,6 @@
 import Ingress from '../../../schema/ingress-extensions-v1beta1';
 
-function ingress(options: {
+export function ingress(options: {
   name: string;
   namespace: string;
   host: string;
@@ -34,7 +34,7 @@ function ingress(options: {
     },
   };
 }
-function certificate(options: {
+export function certificate(options: {
   name: string;
   namespace: string;
   host: string;
