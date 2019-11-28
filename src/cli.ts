@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import {print, diff, apply, run, destroy} from '.';
+import {print, diff, apply, run, destroy, getEnvVars} from '.';
 
 const args = process.argv.slice(2);
 
@@ -11,6 +11,18 @@ const otherArgs = args
 
 try {
   switch (args[0]) {
+    case 'get-env-vars':
+      // user, namespace, clusterName
+      getEnvVars({
+        user: args.find((_a, i, as) => i !== 0 && as[i - 1] === '--user'),
+        namespace: args.find(
+          (_a, i, as) => i !== 0 && as[i - 1] === '--namespace',
+        ),
+        clusterName: args.find(
+          (_a, i, as) => i !== 0 && as[i - 1] === '--cluster',
+        ),
+      });
+      break;
     case 'print':
       print(filename);
       break;

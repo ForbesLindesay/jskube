@@ -120,6 +120,7 @@ jskube apply -f config.ts
 Commands:
 
 - `jskube print -f foo.ts` - print the yaml for foo.ts
+- `jskube get-env-vars --user service_user_name --namespace service_user_namespace` - get the environment variables needed to connect to kubernetes as a given service user from CI
 - `jskube apply -f foo.ts` - update the infrastructure to match foo.ts
 - `jskube diff -f foo.ts` - show the changes if foo.ts is applied
 - `jskube delete -f foo.ts` - delete all the resources in foo.ts (also aliased as `jskube destroy -f foo.ts`)
