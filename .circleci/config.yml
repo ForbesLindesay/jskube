@@ -78,7 +78,6 @@ jobs:
       - image: circleci/node:12
     steps:
       - setup
-      - build
       - publish-dry-run
 
   publish:
