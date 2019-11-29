@@ -130,6 +130,7 @@ export function run(
         certFile.name,
         Buffer.from(process.env.KUBERNETES_CLUSTER_CERTIFICATE!, 'base64'),
       );
+      extraArgs.push(`--certificate-authority=${certFile.name}`);
     }
     if (filename) {
       const yaml = print(filename);
