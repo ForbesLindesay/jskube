@@ -7,7 +7,7 @@ const args = process.argv.slice(2);
 const filename = args.find((_a, i, as) => i !== 0 && as[i - 1] === '-f')!;
 const otherArgs = args
   .slice(1)
-  .filter((a, i, as) => a !== '-f' && (i !== 0 && as[i - 1] !== '-f'));
+  .filter((a, i, as) => a !== '-f' && (i === 0 || as[i - 1] !== '-f'));
 
 try {
   switch (args[0]) {
