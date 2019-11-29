@@ -24,7 +24,7 @@ try {
       });
       break;
     case 'print':
-      print(filename);
+      process.stdout.write(print(filename));
       break;
     case 'diff':
       diff(filename, otherArgs);
